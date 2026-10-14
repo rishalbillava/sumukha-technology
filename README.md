@@ -1,42 +1,53 @@
-# Sumukha Technology
+# Sumukha Technology — Next.js + React
 
-Responsive dark website for currency counting machines, cash sorting machines and fake note detectors.
+Responsive dark website for currency counting machines, sorting machines and fake note detectors. Rebuilt with Next.js App Router and React components.
 
-## Features
+## Included
 
-- Interactive native WebGL 3D previews with rotation, zoom and reset controls
-- Actual product photos and category filters
-- Kundapur, Udupi, Mangalore, Shivamogga and Bhatkal location enquiries
+- Interactive native WebGL previews with drag rotation, zoom, keyboard controls and reset
+- Actual product photos with a photo-view option
+- React product selection, category filters, mobile navigation and location enquiries
+- Kundapur, Udupi, Mangalore, Shivamogga and Bhatkal
 - Email enquiry preparation and telephone contact links
-- No automatic animations and no displayed prices
+- No automatic animations or displayed prices
 
-The 3D models are illustrative previews. Use product photos for the actual appearance. The enquiry form opens the visitor’s email app; it does not send email directly.
+The 3D models are illustrative. Product photos show the actual appearance. The enquiry form opens the visitor’s email app; it does not send email directly.
 
 ## Run locally
 
-Requires Node.js 18 or newer. This project has no npm dependencies.
-
-From this directory, run:
+Install Node.js 20.9 or newer. Node.js 25 is supported by the project’s version requirement.
 
 ```sh
+npm install
 npm run dev
 ```
 
-Then open http://localhost:3000. Press Ctrl+C to stop the server.
+Open http://localhost:3000. Press Ctrl+C to stop.
 
-`npm start` also works. No `npm install` is required.
+## Production build
 
-Python alternative: `python -m http.server 3000` (or `py -m http.server 3000` on Windows).
+```sh
+npm run build
+npm start
+```
 
-## Publish
+This project exports a static production site to `out/`. `npm start` serves that production output locally. Build first.
 
-Upload this directory to a static web host. The root `index.html` is the entry point. On Vercel, use framework preset **Other**, leave the build command empty, and use `.` as the output directory.
+## Vercel
 
-## Edit
+Import this GitHub repository, select the Next.js framework preset, and keep the default `npm run build` command. Remove any old output-directory override such as `.` that was used for the HTML version. Next.js handles the static export.
 
-- `index.html`: content, contact details and forms
-- `style.css`: dark theme and responsive layouts
-- `app.js`: product selection, filters and email enquiry
-- `scene3d.js`: illustrative 3D geometry
-- `viewer3d.js`: WebGL viewer and controls
-- `assets/`: product photos and company logo
+## Project structure
+
+- `app/layout.jsx`: document metadata and shared styles
+- `app/page.jsx`: homepage route
+- `app/globals.css`: dark theme and responsive layouts
+- `components/Home.jsx`: React page, filters, product selection and enquiry form
+- `components/MachineViewer.jsx`: React-managed 3D viewer and photo mode
+- `lib/catalog.js`: products, locations and enquiry formatting
+- `lib/machine-geometry.js`: illustrative 3D mesh data
+- `lib/create-viewer.js`: WebGL renderer with lifecycle cleanup
+- `public/assets/`: product photos and logo
+- `scripts/serve.mjs`: local static production server
+
+Browser graphics APIs are initialized after the React component mounts. Renderer resources and event handlers are cleaned up when it unmounts. Rendering occurs on interaction or resize, with no continuous animation loop.
